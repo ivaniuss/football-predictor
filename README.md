@@ -306,8 +306,35 @@ Strong home advantage present in the data — consistent with real Premier Leagu
 
 ## Future Improvements
 
-- Add injury/suspension data (Transfermarkt API)
-- Add betting odds as a feature (already in raw data: B365H, B365D, B365A)
+### High impact (new data sources)
+
+These require external data not in football-data.co.uk. They address the model's biggest blind spots.
+
+| Feature | Source | Why it matters |
+|---------|--------|---------------|
+| **Injuries & suspensions** | [Transfermarkt API](https://www.transfermarkt.com/) | A missing key player can flip a result. Currently the model has no way to know this. |
+| **Squad market value** | Transfermarkt | Proxy for squad quality — captures transfers, promotions, loan deals automatically. |
+| **Manager change** | Manual / Transfermarkt | New manager bounce is a real phenomenon (~5 match window). |
+| **Expected Goals (xG)** | [FBref](https://fbref.com/) / [Understat](https://understat.com/) | Better measure of team quality than raw goals — filters out luck. |
+| **Fixture congestion** | Schedule data | Teams in Champions League / cups play more, fatigue affects results. |
+
+### Medium impact (engineering from existing data)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Betting odds (AvgH, AvgD, AvgA) | ✅ Tested | `07_feature_search.py` found only +0.18% improvement — ELO already captures similar signal. |
+| Shots on target ratio | ✅ Tested | Not significant in forward selection. |
+| Corners / fouls avg | ✅ Tested | Added noise, worsened log-loss. |
+| Goal difference trend | ✅ Tested | Not significant. |
+| Days rest between matches | ✅ Tested | Not significant. |
+| Away shots avg | ✅ Tested | +0.12% improvement — marginal. |
+| Home/away specific form | ❌ Not tested | Form split by venue (only home games, only away games). |
+| League position at match time | ❌ Not tested | Requires computing standings per matchday. |
+| Streak detection | ❌ Not tested | Consecutive wins/losses/draws. |
+
+### Other improvements
+
 - Expand to other leagues (La Liga, Bundesliga, Serie A)
-- Add shots on target ratio as a form metric
 - Build REST API for agent integration
+- Add confidence threshold (only predict when model is >X% confident)
+- Ensemble with other models (LightGBM, CatBoost) for more stable predictions
