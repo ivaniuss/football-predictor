@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data (generated - model.pkl, features.csv, tracking.csv)
+data/
+
+# Lock file (regenerate with: uv sync)
+uv.lock
